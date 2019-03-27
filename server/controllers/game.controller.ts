@@ -7,8 +7,8 @@ import DaoGames from '../dao/dao.games';
 let GameController: any = {};
 
 GameController.getGames = async (req: Request, res: Response) => {
-    let lst: any = await DaoGames.getGames();
-    if (lst) res.status(200).json({ lst });
+    let GameList: any = await DaoGames.getGames();
+    if (GameList) res.status(200).json({ GameList });
     else res.status(200).json({ message: "ni ahi perro" });
 }
 GameController.postGame = async (req: Request, res: Response) => {
@@ -57,6 +57,26 @@ GameController.postGame = async (req: Request, res: Response) => {
     }
 }
 
+GameController.deleteGame = async (req:Request, res:Response)=>{
+    let params = req.params;
 
+    if(params.id){
+        let resDelete : number = await DaoGames.deleteGame(params.id);
+
+        if(resDelete == -1){
+            res.status(200).json({message:"No se encontro el registro que se desea borrar"});
+        }
+        if(resDelete>0){
+            res.status(200).json({message:"Se borro el juego satisfactoriamente"});
+        }
+        else{
+            res.status(200).json({message:"No se borro ningun registro"});
+        }
+
+    }
+    else{
+        res.status(400).json({error:"No se paso la id que se quiere borrar"});
+    }
+}
 
 export { GameController };
