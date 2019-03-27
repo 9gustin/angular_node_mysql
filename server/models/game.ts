@@ -1,8 +1,8 @@
 export class Game{
-    id ?: String;
-    name ?: String;
-    description ?: String;
-    image?:String;
+    id ?: string;
+    name ?: string;
+    description ?: string;
+    image?:string;
     created_at ?:Date;
 
     constructor(id = '', name='', description='', image='', created_at=new Date()){

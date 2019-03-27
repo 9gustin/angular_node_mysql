@@ -4,7 +4,7 @@ import {Game} from '../models/game';
 let DaoGames : any = {};
 
 DaoGames.getGames = async function() : Promise<JSON>{
-    let lst = await pool.query('SELECT * FROM GAMES');
+    let lst = await pool.query('SELECT * FROM GAMES ORDER BY CREATED_AT DESC');
 
     return lst;
 }
@@ -12,8 +12,6 @@ DaoGames.IdValid = async function(id:string): Promise<boolean>{
     let GamesWithSameId : any = await pool.query('SELECT * FROM GAMES WHERE ID = ?', [id]);
 
     let output : boolean = false;
-
-    console.log(GamesWithSameId);
 
     if(GamesWithSameId.length == 0){
         output = true;
