@@ -8,12 +8,15 @@ DaoGames.getGames = async function (): Promise<JSON> {
 
     return lst;
 }
-DaoGames.IdValid = async function (id: string): Promise<boolean> {
+DaoGames.idExists = async function (id: string): Promise<boolean> {
     let GamesWithSameId: any = await pool.query('SELECT * FROM GAMES WHERE ID = ?', [id]);
 
     let output: boolean = false;
 
     if (GamesWithSameId.length == 0) {
+        output = false;
+    }
+    else {
         output = true;
     }
 
@@ -28,18 +31,23 @@ DaoGames.InsertGame = async function (game: Game): Promise<number> {
     return output;
 }
 DaoGames.deleteGame = async function (id: string): Promise<number> {
-    let idFound: boolean = (await pool.query('SELECT * FROM GAMES WHERE ID=?', [id])).length > 0 ? true : false;
-    let output: number = -1;
-    if (idFound) {
-        let res = await pool.query('DELETE FROM GAMES WHERE ID=?', [id]);
+    let output: number = 0;
 
-        output = (res.affectedRows) ? res.affectedRows : 0;
-    }
-    else {
-        output = -1;
-    }
+    let res = await pool.query('DELETE FROM GAMES WHERE ID=?', [id]);
+
+    output = (res.affectedRows) ? res.affectedRows : 0;
+
     return output;
 }
 
+DaoGames.UpdateGame = async function (game: Game, id:string): Promise<number> {
+    let output: number = 0;
+
+    let res = await pool.query('UPDATE GAMES SET ? WHERE ID = ?', [game, id]);
+
+    output = (res.affectedRows) ? res.affectedRows : 0;
+
+    return output;
+}
 export default DaoGames;
 

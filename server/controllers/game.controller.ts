@@ -23,17 +23,14 @@ GameController.postGame = async (req: Request, res: Response) => {
 
         //Validacion que los datos cargados no esten vacios. Con validator
         let { errors, isValid } = GameValidator.checkNewGame(newGame);
-        console.log(isValid);
-        console.log(errors);
+
         if (isValid) {
             newGame.id = uniqid();
-
-
             //validacion que el id sea unica    
             let uniqueID: boolean = false;
 
             while (!uniqueID) {
-                uniqueID = DaoGames.IdValid(newGame.id);
+                uniqueID = DaoGames.idExists(newGame.id);
             }
 
             //ID VALIDADADA
@@ -61,17 +58,20 @@ GameController.deleteGame = async (req:Request, res:Response)=>{
     let params = req.params;
 
     if(params.id){
-        let resDelete : number = await DaoGames.deleteGame(params.id);
+        if(DaoGames.idExists(params.id)){
+            let resDelete : number = await DaoGames.deleteGame(params.id);
 
-        if(resDelete == -1){
-            res.status(200).json({message:"No se encontro el registro que se desea borrar"});
-        }
-        if(resDelete>0){
-            res.status(200).json({message:"Se borro el juego satisfactoriamente"});
+            if(resDelete>0){
+                res.status(200).json({message:"Se borro el juego satisfactoriamente"});
+            }
+            else{
+                res.status(200).json({message:"No se borro ningun registro"});
+            }
         }
         else{
-            res.status(200).json({message:"No se borro ningun registro"});
+            res.status(200).json({message:"no se encontro el registro que se desea borrar"});
         }
+        
 
     }
     else{
@@ -79,4 +79,49 @@ GameController.deleteGame = async (req:Request, res:Response)=>{
     }
 }
 
+GameController.putGame = async (res:Response, req:Request)=>{
+    var params = req.body;
+
+    if(params.name && params.id && params.description && params.image){
+        let UpdateGame = new Game();
+
+        UpdateGame.name =  params.name;
+        UpdateGame.description = params.description;
+        UpdateGame.image = params.image;
+        UpdateGame.id = params.id;
+
+        let {errors, isValid} = GameValidator.checkUpdateGame(UpdateGame);
+
+        if(isValid){
+            //si los datos fueron enviados correctamente
+
+            //validar si el id existe
+            if(DaoGames.idExists){
+
+                //update
+                let id : any = UpdateGame.id;
+                UpdateGame.id = undefined;
+                UpdateGame.created_at = undefined;
+
+                let resUpdate = await DaoGames.UpdateGame(UpdateGame, id);
+
+                if(resUpdate>0){
+                    res.status(200).json({message:"Se actualizo el juego correctamente"});
+                }
+                else{
+                    res.status(200).json({message:"No se actualizaron los datos"});
+                }
+            }
+            else{
+                res.status(200).json({message:"no se encontro el registro que se desea actualizar"});
+            }
+        }
+        else{
+            res.status(200).json(errors);
+        }
+    }
+    else{
+        res.status(400).json({error:"No se enviaron los datos necesarios para realizar la peticion"});
+    }
+}
 export { GameController };
