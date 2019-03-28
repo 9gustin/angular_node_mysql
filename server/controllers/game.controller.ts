@@ -55,7 +55,7 @@ GameController.postGame = async (req: Request, res: Response) => {
 }
 
 GameController.deleteGame = async (req:Request, res:Response)=>{
-    let params = req.params;
+    let params : any = req.params;
 
     if(params.id){
         if(DaoGames.idExists(params.id)){
@@ -79,8 +79,8 @@ GameController.deleteGame = async (req:Request, res:Response)=>{
     }
 }
 
-GameController.putGame = async (res:Response, req:Request)=>{
-    var params = req.body;
+GameController.putGame = async (req:Request, res:Response)=>{
+    let params : any = req.body;
 
     if(params.name && params.id && params.description && params.image){
         let UpdateGame = new Game();
@@ -90,7 +90,7 @@ GameController.putGame = async (res:Response, req:Request)=>{
         UpdateGame.image = params.image;
         UpdateGame.id = params.id;
 
-        let {errors, isValid} = GameValidator.checkUpdateGame(UpdateGame);
+        let {errors, isValid} = GameValidator.CheckUpdateGame(UpdateGame);
 
         if(isValid){
             //si los datos fueron enviados correctamente

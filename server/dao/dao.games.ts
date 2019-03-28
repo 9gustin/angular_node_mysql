@@ -42,8 +42,14 @@ DaoGames.deleteGame = async function (id: string): Promise<number> {
 
 DaoGames.UpdateGame = async function (game: Game, id:string): Promise<number> {
     let output: number = 0;
+    
+    let gameJson = {
+        name : game.name,
+        description:game.description,
+        image : game.image
+    };
 
-    let res = await pool.query('UPDATE GAMES SET ? WHERE ID = ?', [game, id]);
+    let res = await pool.query('UPDATE GAMES SET ? WHERE ID = ?', [gameJson, id]);
 
     output = (res.affectedRows) ? res.affectedRows : 0;
 
