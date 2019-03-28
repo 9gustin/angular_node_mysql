@@ -3,7 +3,7 @@ import { Game } from '../models/game';
 
 let DaoGames: any = {};
 
-DaoGames.getGames = async function (): Promise<JSON> {
+DaoGames.SelectGames = async function (): Promise<JSON> {
     let lst = await pool.query('SELECT * FROM GAMES ORDER BY CREATED_AT DESC');
 
     return lst;
@@ -55,5 +55,21 @@ DaoGames.UpdateGame = async function (game: Game, id:string): Promise<number> {
 
     return output;
 }
+DaoGames.SelectGameById = async function(id:string) : Promise<Game>{
+    let game : Game = await pool.query('SELECT * FROM GAMES WHERE ID = ? LIMIT 1', [id]);
+
+    return game;
+}
+
+DaoGames.SelectGamesByParameters = async function(params:any):Promise<JSON>{
+
+    params.name = '%'+params.name+'%';
+    params.description = '%'+params.description+'%';
+
+    let output : any = await pool.query("SELECT * FROM GAMES WHERE name like ? and description like ?;", [params.name, params.description]);
+
+    return output;
+}
 export default DaoGames;
+
 

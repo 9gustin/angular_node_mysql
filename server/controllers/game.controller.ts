@@ -3,12 +3,13 @@ import uniqid from 'uniqid';
 import { Game } from '../models/game';
 import GameValidator from '../validacion/game.validator';
 import DaoGames from '../dao/dao.games';
+import { Resolver } from 'dns';
 
 let GameController: any = {};
 
 GameController.getGames = async (req: Request, res: Response) => {
-    let GameList: any = await DaoGames.getGames();
-    if (GameList) res.status(200).json({ GameList });
+    let GameList: any = await DaoGames.SelectGames();
+    if (GameList) res.status(200).json({ source : GameList });
     else res.status(200).json({ message: "ni ahi perro" });
 }
 GameController.postGame = async (req: Request, res: Response) => {
@@ -124,4 +125,47 @@ GameController.putGame = async (req:Request, res:Response)=>{
         res.status(400).json({error:"No se enviaron los datos necesarios para realizar la peticion"});
     }
 }
+
+GameController.getGameById = async (req:Request, res:Response)=>{
+    let params = req.params;
+
+    if(params.id){
+
+        if(DaoGames.idExists(params.id)){
+            let gameFind:Game = await DaoGames.SelectGameById(params.id);
+
+            if(gameFind){
+                res.status(200).json({source:gameFind});
+            }
+            else{
+                res.status(200).json({message:"no se encontro el juego buscado"});
+            }
+        }
+        else{
+            res.status(200).json({message:"no se encontro el juego buscado"});
+        }
+    }
+    else{
+        res.status(400).json({error:"No se enviaron los datos necesarios para realizar la peticion"});
+    }
+}
+
+GameController.getGamesByParameters = async (req:Request, res:Response)=>{
+    let params = req.body;
+
+    if(params.name !=undefined && params.description!=undefined){
+        
+        let GameList = await DaoGames.SelectGamesByParameters(params);
+
+        if(GameList){
+            res.status(200).json({source:GameList});
+        }else{
+            res.status(200).json({message:"No se encontro el juego buscado"});
+        }      
+    }
+    else{
+        res.status(400).json({error:"No se enviaron los campos necesarios para realizar la peticion"});
+    }
+}
+
 export { GameController };

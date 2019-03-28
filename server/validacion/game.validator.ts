@@ -60,4 +60,5 @@ GameValidator.CheckUpdateGame = function(game:Game):JSON{
 
     return output;
 }
+
 export default GameValidator;
