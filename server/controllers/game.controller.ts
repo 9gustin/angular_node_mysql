@@ -14,8 +14,8 @@ GameController.getGames = async (req: Request, res: Response) => {
 }
 GameController.postGame = async (req: Request, res: Response) => {
     let params: any = req.body;
+
     //VALIDA QUE LLEGUEN TODOS LOS PARAMETROS   
-    if (params.name && params.description && params.image) {
         let newGame = new Game();
 
         newGame.name = params.name;
@@ -48,11 +48,6 @@ GameController.postGame = async (req: Request, res: Response) => {
         else {
             res.status(200).json({ errors });
         }
-
-    }
-    else {
-        res.status(400).json({ error: "No se enviaron los datos necesarios para registrar un juego" })
-    }
 }
 
 GameController.deleteGame = async (req:Request, res:Response)=>{
@@ -83,7 +78,7 @@ GameController.deleteGame = async (req:Request, res:Response)=>{
 GameController.putGame = async (req:Request, res:Response)=>{
     let params : any = req.body;
 
-    if(params.name && params.id && params.description && params.image){
+
         let UpdateGame = new Game();
 
         UpdateGame.name =  params.name;
@@ -120,10 +115,7 @@ GameController.putGame = async (req:Request, res:Response)=>{
         else{
             res.status(200).json(errors);
         }
-    }
-    else{
-        res.status(400).json({error:"No se enviaron los datos necesarios para realizar la peticion"});
-    }
+
 }
 
 GameController.getGameById = async (req:Request, res:Response)=>{
@@ -132,10 +124,10 @@ GameController.getGameById = async (req:Request, res:Response)=>{
     if(params.id){
 
         if(DaoGames.idExists(params.id)){
-            let gameFind:Game = await DaoGames.SelectGameById(params.id);
+            let GameFind:Game = await DaoGames.SelectGameById(params.id);
 
-            if(gameFind){
-                res.status(200).json({source:gameFind});
+            if(GameFind){
+                res.status(200).json({source:GameFind});
             }
             else{
                 res.status(200).json({message:"no se encontro el juego buscado"});

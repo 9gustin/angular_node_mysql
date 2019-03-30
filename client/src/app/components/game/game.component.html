@@ -1,3 +1,22 @@
-<p>
-  game works!
-</p>
+<div class="card ">
+  <div class="title">
+    <h1>Juegos</h1>
+  </div>
+  <div class="new row">
+    <a  (click)="addGame()" class="button">Agregar</a>
+  </div>
+  <div class="lista" >
+    <article class="game" *ngFor="let game of gameList" >
+      <h1 class="row padding5">{{game.name}}</h1>
+      <h2 class="row">{{game.description}}</h2>
+      <h3 class="row">{{game.image}}</h3>
+      <div class="row">
+        <button class="button edit margin5" routerLink="edit/{{game.id}}">Editar</button>
+      </div>
+      <div class="row">
+        <button class="button red margin5" (click)="deleteGame(game.id)">Eliminar</button>
+      </div>
+    </article>
+  </div>
+
+</div>

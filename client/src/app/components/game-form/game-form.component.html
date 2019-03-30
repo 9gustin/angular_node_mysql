@@ -1,0 +1,36 @@
+<div class="card form">
+  <div class="row title">Juego</div>
+    <form #gameForm="ngForm" (ngSubmit)="saveGame(gameForm)">
+      <input type="text" name="id" #id="ngModel" [(ngModel)]="game.id" hidden>
+      <div class="row">
+        <input type="text" placeholder="Nombre"
+          name="name" #name="ngModel" [(ngModel)]="game.name">
+      </div>
+      <div class="row">
+        <label for="">{{errors.name}}</label>
+      </div>
+      <div class="row">
+        <input type="text" placeholder="Descripcion"
+          name="description" #description="ngModel" [(ngModel)]="game.description">
+      </div>
+      <div class="row">
+        <label for="">{{errors.description}}</label>
+      </div>
+      <div class="row">
+        <input type="text" placeholder="Imagen"
+          name="image" #image="ngModel" [(ngModel)]="game.image">
+      </div>
+      <div class="row">
+        <label for="">{{errors.image}}</label>
+      </div>
+      <div class="row">
+        <input type="submit" class="button" value = "Guardar">
+      </div>
+      <div class="row">
+          <input type="button" class=" button red" (click)="GameList()"value = "Ver lista de juegos">
+        </div>
+    </form>
+    <div class="res">
+      {{respuesta}}
+    </div>
+</div>

@@ -1,0 +1,83 @@
+.card{
+    width: 85%;
+    min-width: 300px;
+    margin:20px 7% 0px 7%;
+    background-color: white;
+    margin-bottom: 20px;
+}
+.title{
+    text-align: center;
+}
+
+.new{
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.button{
+    padding:5px;
+    background-color: lightgreen;
+    border-radius: 5px;
+    opacity: .75;
+    transition: all 1s;
+    border:1px solid black;
+    cursor: pointer;
+}
+.button:hover{
+    opacity: 1;
+}
+.lista{
+    display: inline-block;
+    display: -webkit-flex;
+   display: flex;
+   -webkit-flex-wrap: wrap;
+   flex-wrap: wrap;
+}
+.game{
+    width:30%;
+    display: inline-block;
+    min-width: 250px;
+    margin: 15px 0px 15px 30px;
+    border:1px solid black;
+    padding: 10px;
+}
+.row{
+    height: auto;
+}
+.game .button{
+    width: 60%;
+    min-width: 150px;
+    outline: none;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.margin5{
+    margin: 5px;
+}
+.padding5{
+    padding: 5px;
+}
+.center{
+    text-align: center;
+}
+.game .row {
+    text-align: center;
+}
+
+.red{
+    background-color: rgba(227, 39, 39,1);
+}
+.edit{
+    background-color: rgba(39, 148, 227,1)
+}
+
+.game h2{
+    font-size: 17px;
+}
+.game h3{
+    font-size: 14px;
+    font-weight: 100;
+
+}
